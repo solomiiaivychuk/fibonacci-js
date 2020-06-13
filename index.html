@@ -16,11 +16,20 @@
     <div class="row">
       <div class="col p-5">
         <h1 class="title mb-5">Fibonacci calculator</h1>
-          <span class ="text d-flex">The Fibonacci Of 
+          <span class ="text d-flex m-3">The Fibonacci Of 
             <input type="number" id="X" class="input-group mr-2 ml-2"> </input> 
               <button class="btn btn-primary mr-2">is</button>
             <span id="Y"> </span>
+            <div class="spinner-border d-none" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="server-error d-none"></div>
           </span>
+          <div class="row">
+          <div class="separator d-flex"></div>
+          <div class="alert alert-danger p-0 d-none" role="alert">
+            Can't be larger than 50
+          </div></div>
       </div>
     </div>
   </div>

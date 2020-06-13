@@ -14,6 +14,13 @@
 .input-group {
     width: 100px;
 }
-
-
-
+.separator {
+    width: 15%;
+}
+.danger {
+    border: 1px solid #D9534F;;
+    color: #D9534F;;
+}
+.server-error {
+    color: #D9534F;
+}
