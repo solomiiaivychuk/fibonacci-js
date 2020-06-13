@@ -6,12 +6,24 @@
   <title>ITC Template</title>
   <meta name="description" content="Fibonacci Project">
   <meta name="author" content="Solomiia Ivychuk">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
-
-  <span>The Fibonacci number of <span id="X"> </span> is <span id="Y"> </span></span>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col p-5">
+        <h1 class="title mb-5">Fibonacci calculator</h1>
+          <span class ="text d-flex">The Fibonacci Of 
+            <input type="number" id="X" class="input-group mr-2 ml-2"> </input> 
+              <button class="btn btn-primary mr-2">is</button>
+            <span id="Y"> </span>
+          </span>
+      </div>
+    </div>
+  </div>
   <script src="./js/scripts.js"></script>
 </body>
 </html>
