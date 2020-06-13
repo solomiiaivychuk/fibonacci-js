@@ -1,15 +1,15 @@
-let fibonacci = document.getElementById("Y");
 let button = document.querySelector('.btn');
 
-
-button.addEventListener("click", function(){
-    let counter = document.getElementById("X").value;
-    let arr = [];
-    arr[0] = 0;
-    arr[1] = 1;
-    for (let i = 2; i <= counter; i++) {
-        arr[i] = arr[i-1] + arr[i-2];
+function fibonacciCalculator(x){
+    if (x <= 1) {
+        return x;
+    } else {
+        return fibonacciCalculator(x-1) + fibonacciCalculator(x-2);
     }
-    fibonacci.innerText = arr[counter];
-});
+}
 
+button.addEventListener("click", function() {
+    let counter = document.getElementById("X").value;
+    let fibonacci = document.getElementById("Y"); 
+    fibonacci.innerText = fibonacciCalculator(counter);
+});
