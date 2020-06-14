@@ -12,7 +12,7 @@
   button.addEventListener("click", function () {
     let number = document.getElementById("X").value;
     let address = `http://localhost:5050/fibonacci/${number}`;
-
+    prevResultsList.innerHTML = null; // fix for reloading content
     if (number > 50) {
       dangerAlert.classList.remove("d-none");
       input.classList.add("danger");
@@ -52,6 +52,7 @@
   }
 
   function showDBresults(data) {
+    
     let sortedData = data.results.sort((a, b) => b.createdDate - a.createdDate);
     console.log(sortedData);
     for (let i = 0; i < sortedData.length; i++) {
@@ -72,7 +73,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     resultsSpinner.classList.remove("d-none");
     getCalculationsList();
-    prevResultsList.innerHTML.reload;
+    //prevResultsList.innerHTML.reload;
   });
 
   function sortList(array) {}
