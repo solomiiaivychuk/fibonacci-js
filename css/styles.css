@@ -24,3 +24,6 @@
 .server-error {
     color: #D9534F;
 }
+#prev-results-list {
+    list-style-type: none;
+}
