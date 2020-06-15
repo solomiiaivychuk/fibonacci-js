@@ -1,6 +1,5 @@
 (() => {
-  let button = document.querySelector(".btn");
-
+  let button = document.querySelector(".is");
   let fibonacci = document.getElementById("Y");
   let calcSpinner = document.querySelector(".calc-spinner");
   let dangerAlert = document.querySelector(".alert-danger");
@@ -12,37 +11,52 @@
   button.addEventListener("click", function () {
     let number = document.getElementById("X").value;
     let address = `http://localhost:5050/fibonacci/${number}`;
-    prevResultsList.innerHTML = null; // fix for reloading content
+    prevResultsList.innerHTML = null;
     if (number > 50) {
-      dangerAlert.classList.remove("d-none");
-      input.classList.add("danger");
+      handleLargeValueError();
     } else {
-      dangerAlert.classList.add("d-none");
-      input.classList.remove("danger");
-      calcSpinner.classList.remove("d-none");
+      resetErrorMessage();
       fetch(address)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            handleErrorBadResponse();
+            response.text().then(function (text) {
+              serverError.innerText = `Server Error: ${text}`;
+            });
+          }
+          response.json();
+        })
         .then((data) => {
-          calcSpinner.classList.add("d-none");
-          resultsSpinner.classList.remove("d-none");
+          prepareForResultsDisplay();
           fibonacci.innerText = data.result;
         })
-        .then(async () => {
-          await getCalculationsList();
-        })
-        .catch((error) => {
-          //handleError()
-          fibonacci.classList.add("d-none");
-          calcSpinner.classList.add("d-none");
-          serverError.classList.remove("d-none");
-          serverError.innerText = error;
+        .then(() => {
+          getCalculationsList();
         });
     }
   });
 
-  async function getCalculationsList() {
+  function prepareForResultsDisplay() {
+    calcSpinner.classList.add("d-none");
+    resultsSpinner.classList.remove("d-none");
+  }
+  function handleErrorBadResponse() {
+    fibonacci.classList.add("d-none");
+    calcSpinner.classList.add("d-none");
+    serverError.classList.remove("d-none");
+  }
+  function handleLargeValueError() {
+    dangerAlert.classList.remove("d-none");
+    input.classList.add("danger");
+  }
+  function resetErrorMessage() {
+    dangerAlert.classList.add("d-none");
+    input.classList.remove("danger");
+    calcSpinner.classList.remove("d-none");
+  }
+  function getCalculationsList() {
     let url = "http://localhost:5050/getFibonacciResults";
-    await fetch(url)
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -52,7 +66,6 @@
   }
 
   function showDBresults(data) {
-    
     let sortedData = data.results.sort((a, b) => b.createdDate - a.createdDate);
     console.log(sortedData);
     for (let i = 0; i < sortedData.length; i++) {
@@ -66,6 +79,7 @@
           new Date(sortedData[i].createdDate)
       );
       item.appendChild(text);
+      item.classList.add("list-group-item");
       prevResultsList.appendChild(item);
     }
   }
@@ -73,8 +87,5 @@
   document.addEventListener("DOMContentLoaded", function () {
     resultsSpinner.classList.remove("d-none");
     getCalculationsList();
-    //prevResultsList.innerHTML.reload;
   });
-
-  function sortList(array) {}
 })();

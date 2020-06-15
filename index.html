@@ -16,9 +16,9 @@
     <div class="row">
       <div class="col p-5">
         <h1 class="title mb-5">Fibonacci calculator</h1>
-          <span class ="text d-flex m-3">The Fibonacci Of 
+          <span class ="text d-flex">The Fibonacci Of 
             <input type="number" id="X" class="input-group mr-2 ml-2"> </input> 
-              <button class="btn btn-primary mr-2">is</button>
+              <button class="btn btn-primary mr-2 is">is</button>
             <span id="Y"> </span>
             <div class="spinner-border d-none calc-spinner" role="status">
               <span class="sr-only">Loading...</span>
@@ -32,24 +32,27 @@
           </div>
         </div>
         <div class="row">
-          <div class="container d-flex">
-
-          <h3 class="ml-3 mr-3">Results</h3>
+          <div class="container d-flex m-0 pt-3 pb-3">
+          <h3 class="">Results</h3>
           <div class="spinner-border d-none results-spinner" role="status">
             <span class="sr-only">Loading...</span>
           </div>
           </div>
         </div>
+
+
         <div class="row">
-          <div class="container">
-          <ol class="p-0 m-3" id="prev-results-list">
+          <div class="container m-0">
+          <ul class="list-group" id="prev-results-list">
             
-          </ol>
+          </ul>
         </div>
         </div>
+
       </div>
     </div>
   </div>
+
   <script src="./js/scripts.js"></script>
 </body>
 </html>
