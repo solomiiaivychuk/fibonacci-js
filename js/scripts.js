@@ -18,13 +18,13 @@
       resetErrorMessage();
       fetch(address)
         .then((response) => {
-          if (!response.ok) {
-            handleErrorBadResponse();
-            response.text().then(function (text) {
-              serverError.innerText = `Server Error: ${text}`;
-            });
-          }
-          response.json();
+            if (!response.ok) {
+              handleErrorBadResponse();
+              response.text().then((text) => {
+                serverError.innerText = `Server Error: ${text}`;
+              })
+            }
+            return response.json();
         })
         .then((data) => {
           prepareForResultsDisplay();
@@ -53,6 +53,7 @@
     dangerAlert.classList.add("d-none");
     input.classList.remove("danger");
     calcSpinner.classList.remove("d-none");
+    serverError.classList.add("d-none");
   }
   function getCalculationsList() {
     let url = "http://localhost:5050/getFibonacciResults";
