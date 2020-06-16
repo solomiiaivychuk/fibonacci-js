@@ -7,11 +7,13 @@
   let serverError = document.querySelector(".server-error");
   let resultsSpinner = document.querySelector(".results-spinner");
   let prevResultsList = document.getElementById("prev-results-list");
+  let checkbox = document.querySelector("input[type=checkbox]");
 
   button.addEventListener("click", function () {
     let number = document.getElementById("X").value;
     let address = `http://localhost:5050/fibonacci/${number}`;
     prevResultsList.innerHTML = null;
+    if(checkbox.checked) { // checking the checkbox
     if (number > 50) {
       handleLargeValueError();
     } else {
@@ -33,9 +35,23 @@
         .then(() => {
           getCalculationsList();
         });
+      }
+    } // checking the checkbox
+    else {
+      fibonacci.innerText = fibonacciCalculator(number);
     }
   });
 
+  function fibonacciCalculator(x) {
+    let arr = [];
+    arr[0] = 0;
+    arr[1] = 1;
+    for (let i = 2; i <= x; i++) {
+        arr[i] = arr[i-1] + arr[i-2];
+    }
+    return arr[x];
+    }
+  
   function prepareForResultsDisplay() {
     calcSpinner.classList.add("d-none");
     resultsSpinner.classList.remove("d-none");
@@ -50,6 +66,7 @@
     input.classList.add("danger");
   }
   function resetErrorMessage() {
+    fibonacci.classList.remove("d-none");
     dangerAlert.classList.add("d-none");
     input.classList.remove("danger");
     calcSpinner.classList.remove("d-none");
