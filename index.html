@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>ITC Template</title>
+  <title>Fibonacci Calculator</title>
   <meta name="description" content="Fibonacci Project">
   <meta name="author" content="Solomiia Ivychuk">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -15,9 +15,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col p-5">
+        <!--Title-->
         <h1 class="title mb-5">Fibonacci calculator</h1>
+        <!--Title ends-->
+        <!-- Calculator row -->
           <span class ="text d-flex">The Fibonacci Of 
-            <input type="number" id="X" class="input-group mr-2 ml-2"> </input> 
+            <input type="number" id="X" class="input-group X mr-2 ml-2"> </input> 
               <button class="btn btn-primary mr-2 is">is</button>
             <span id="Y"> </span>
             <div class="spinner-border d-none calc-spinner" role="status">
@@ -25,18 +28,19 @@
             </div>
             <div class="server-error d-none"></div>
           </span>
+          <!-- Calculator row ends -->
           <div class="row">
           <div class="separator d-flex"></div>
           <div class="alert alert-danger p-0 d-none" role="alert">
-            Can't be larger than 50
+            Can't be less than 0 or larger than 50
           </div>
         </div>
-        <!--checkbox-->
+        <!--Checkbox-->
         <div class="row">
           <div class="col d-flex m-0 pt-3 pb-3">
             <div class="input-group checkbox-wrapper">
               <div class="input-group-prepend mr-3">
-                <div class="input-group-text">
+                <div class="input-group-text rounded">
                   <input type="checkbox" aria-label="Checkbox for following text input">
                 </div>
               </div>
@@ -44,6 +48,7 @@
             </div>
           </div>
         </div>
+        <!--Checkbox ends-->
         <!--Results-->
         <div class="row">
           <div class="container d-flex m-0 pt-3 pb-3">
@@ -53,8 +58,25 @@
           </div>
           </div>
         </div>
-
-
+        <!-- Select menu -->
+        <div class="row">
+          <div class="col">
+             <div class="input-group mb-3 sort">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Sort by</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <option value="date-asc">Date Asc</option>
+                <option value="date-desc">Date Desc</option>
+                <option value="number-asc">Number Asc</option>
+                <option value="number-desc">Number Desc</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Select menu -->
         <div class="row">
           <div class="container m-0">
           <ul class="list-group" id="prev-results-list">
@@ -62,11 +84,10 @@
           </ul>
         </div>
         </div>
-
+        <!--Results end-->
       </div>
     </div>
   </div>
-
   <script src="./js/scripts.js"></script>
 </body>
 </html>

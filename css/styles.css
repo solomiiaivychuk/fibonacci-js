@@ -11,7 +11,7 @@
     font-weight: bold;
     text-decoration: underline;
 }
-.input-group {
+.X {
     width: 100px;
 }
 .separator {
@@ -26,4 +26,7 @@
 }
 .checkbox-wrapper {
     width: 30%;
+}
+.sort {
+    width: 25%;
 }

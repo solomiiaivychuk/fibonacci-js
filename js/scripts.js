@@ -1,57 +1,123 @@
 (() => {
-  let button = document.querySelector(".is");
-  let fibonacci = document.getElementById("Y");
-  let calcSpinner = document.querySelector(".calc-spinner");
-  let dangerAlert = document.querySelector(".alert-danger");
-  let input = document.getElementById("X");
-  let serverError = document.querySelector(".server-error");
-  let resultsSpinner = document.querySelector(".results-spinner");
-  let prevResultsList = document.getElementById("prev-results-list");
-  let checkbox = document.querySelector("input[type=checkbox]");
+  const button = document.querySelector(".is");
+  const fibonacci = document.getElementById("Y");
+  const calcSpinner = document.querySelector(".calc-spinner");
+  const dangerAlert = document.querySelector(".alert-danger");
+  const input = document.getElementById("X");
+  const serverError = document.querySelector(".server-error");
+  const resultsSpinner = document.querySelector(".results-spinner");
+  const prevResultsList = document.getElementById("prev-results-list");
+  const checkbox = document.querySelector("input[type=checkbox]");
+  const sortingOption = document.querySelector(".custom-select");
+  const RESULTS_ADRESS = "http://localhost:5050/getFibonacciResults";
 
-  button.addEventListener("click", function () {
-    let number = document.getElementById("X").value;
-    let address = `http://localhost:5050/fibonacci/${number}`;
-    prevResultsList.innerHTML = null;
-    if(checkbox.checked) { // checking the checkbox
-    if (number > 50) {
+  // When page loads, all previous results are shown
+  document.addEventListener("DOMContentLoaded", displayResults());
+
+  async function displayResults() {
+    let list = await getCalculationsList(RESULTS_ADRESS);
+    showResults(list);
+  }
+
+  function getNumber() {
+    return document.getElementById("X").value;
+  }
+
+  function validateInput(input) {
+    if (input > 50 || input < 0) {
       handleLargeValueError();
     } else {
       resetErrorMessage();
-      fetch(address)
-        .then((response) => {
-            if (!response.ok) {
-              handleErrorBadResponse();
-              response.text().then((text) => {
-                serverError.innerText = `Server Error: ${text}`;
-              })
-            }
-            return response.json();
-        })
-        .then((data) => {
-          prepareForResultsDisplay();
-          fibonacci.innerText = data.result;
-        })
-        .then(() => {
-          getCalculationsList();
-        });
-      }
-    } // checking the checkbox
-    else {
-      fibonacci.innerText = fibonacciCalculator(number);
+      return input;
+    }
+  }
+  // function checks if the checkbox is checked: if not - it performs calculations locally; if yes - it gets calculations from the server
+  button.addEventListener("click", async function () {
+    let number = validateInput(getNumber());
+    let CALC_ADDRESS = `http://localhost:5050/fibonacci/${number}`;
+    if (checkbox.checked) {
+      const result = await calculateRemotely(CALC_ADDRESS);
+      prepareForResultsDisplay();
+      fibonacci.innerText = result;
+      displayResults();
+    } else {
+      calcSpinner.classList.add("d-none");
+      fibonacci.innerText = calculateLocally(number);
     }
   });
 
-  function fibonacciCalculator(x) {
+  function calculateLocally(x) {
     let arr = [];
     arr[0] = 0;
     arr[1] = 1;
     for (let i = 2; i <= x; i++) {
-        arr[i] = arr[i-1] + arr[i-2];
+      arr[i] = arr[i - 1] + arr[i - 2];
     }
     return arr[x];
+  }
+
+  async function calculateRemotely(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      handleErrorBadResponse();
+      const error = await response.text();
+      serverError.innerText = `Server Error: ${error}`;
+    } else {
+      const data = await response.json();
+      return data.result;
     }
-  
+  }
+
+  async function getCalculationsList(url) {
+    resultsSpinner.classList.remove("d-none");
+    const response = await fetch(url);
+    const data = await response.json();
+    resultsSpinner.classList.add("d-none");
+    return data;
+  }
+
+  function showResults(data) {
+    for (let i = 0; i < data.results.length; i++) {
+      let item = document.createElement("li");
+      let text = document.createTextNode(
+        "The Fibonacci of " +
+          data.results[i].number +
+          " is " +
+          data.results[i].result +
+          ". Calculated at: " +
+          new Date(data.results[i].createdDate)
+      );
+      item.appendChild(text);
+      item.classList.add("list-group-item");
+      prevResultsList.appendChild(item);
+    }
+  }
+
+  sortingOption.addEventListener(
+    "change",
+    async function () {
+      let data = await getCalculationsList(RESULTS_ADRESS);
+      prevResultsList.innerText = null;
+      switch (sortingOption.value) {
+        case "date-asc":
+          data.results.sort((a, b) => a.createdDate - b.createdDate);
+          break;
+        case "date-desc":
+          data.results.sort((a, b) => b.createdDate - a.createdDate);
+          break;
+        case "number-asc":
+          data.results.sort((a, b) => a.number - b.number);
+          break;
+        case "number-desc":
+          data.results.sort((a, b) => b.number - a.number);
+          break;
+        default:
+          showResults(data);
+      }
+      showResults(data);
+    }
+  );
+
   function prepareForResultsDisplay() {
     calcSpinner.classList.add("d-none");
     resultsSpinner.classList.remove("d-none");
@@ -72,38 +138,4 @@
     calcSpinner.classList.remove("d-none");
     serverError.classList.add("d-none");
   }
-  function getCalculationsList() {
-    let url = "http://localhost:5050/getFibonacciResults";
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        showDBresults(data);
-        resultsSpinner.classList.add("d-none");
-      });
-  }
-
-  function showDBresults(data) {
-    let sortedData = data.results.sort((a, b) => b.createdDate - a.createdDate);
-    console.log(sortedData);
-    for (let i = 0; i < sortedData.length; i++) {
-      let item = document.createElement("li");
-      let text = document.createTextNode(
-        "The Fibonacci of " +
-          sortedData[i].number +
-          " is " +
-          sortedData[i].result +
-          ". Calculated at: " +
-          new Date(sortedData[i].createdDate)
-      );
-      item.appendChild(text);
-      item.classList.add("list-group-item");
-      prevResultsList.appendChild(item);
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    resultsSpinner.classList.remove("d-none");
-    getCalculationsList();
-  });
 })();
